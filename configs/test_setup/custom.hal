@@ -1,0 +1,60 @@
+# Jog Pendant
+loadrt encoder num_chan=1
+loadrt mux4 count=1
+addf encoder.capture-position servo-thread
+addf encoder.update-counters servo-thread
+addf mux4.0 servo-thread
+
+
+loadrt ilowpass
+addf ilowpass.0 servo-thread
+
+setp ilowpass.0.scale 1000
+# This is reponsible with the acceleration-deceleration curves, value between 0 and 1
+setp ilowpass.0.gain 0.05
+
+
+# If your MPG outputs a quadrature signal per click set x4 to 1
+# If your MPG puts out 1 pulse per click set x4 to 0
+setp encoder.0.x4-mode 1
+
+# For velocity mode, set to 1
+# In velocity mode the axis stops when the dial is stopped
+# even if that means the commanded motion is not completed,
+# For position mode (the default), set to 0
+# In position mode the axis will move exactly jog-scale
+# units for each count, regardless of how long that might take,
+setp axis.0.jog-vel-mode 1
+setp axis.2.jog-vel-mode 1
+
+# This sets the scale that will be used based on the input to the mux4
+# Will be divided by the value set for ilowpass.0.scale
+setp mux4.0.in0 0.0001
+setp mux4.0.in1 0.00001
+setp mux4.0.in2 0.000001
+setp halui.feed-override.scale 0.01
+
+# The output from encoder counts is sent to ilowpass
+net mpg-out ilowpass.0.in <= hm2_7i76e.0.7i76.0.0.enc0.count
+
+# The inputs to the mux4 component
+net scale1 mux4.0.sel0 <= hm2_7i76e.0.7i76.0.0.input-25
+net scale2 mux4.0.sel1 <= hm2_7i76e.0.7i76.0.0.input-26
+
+# The output from the mux4 is sent to each axis jog scale
+net mpg-scale <= mux4.0.out
+net mpg-scale => axis.0.jog-scale
+net mpg-scale => axis.2.jog-scale
+
+# The Axis select inputs Z and X
+net mpg-x axis.0.jog-enable <= hm2_7i76e.0.7i76.0.0.input-20 
+net mpg-z axis.2.jog-enable <= hm2_7i76e.0.7i76.0.0.input-22  
+net mpg-a halui.feed-override.count-enable <= hm2_7i76e.0.7i76.0.0.input-23
+
+# The encoder output counts to the axis. Only the selected axis will move.
+
+net encoder-counts  <= ilowpass.0.out
+net encoder-counts => axis.0.jog-counts
+net encoder-counts => axis.2.jog-counts
+net mpg-out => halui.feed-override.counts
+

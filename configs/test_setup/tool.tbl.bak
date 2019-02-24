@@ -1,0 +1,4 @@
+T1 P1 X+0.081843 Z+24.124631 ;master tool 
+T2 P2 X+0.568676 Z+22.774171 ;external threading 
+T3 P3 X-38.171224 Z+28.907859 ;internal threading 
+T4 P4 X-38.861335 Z+46.342933 ;boring tool 
