@@ -256,10 +256,6 @@ net MDI-mode              halui.mode.is-mdi
 net coolant-mist      <=  iocontrol.0.coolant-mist
 net coolant-flood     <=  iocontrol.0.coolant-flood
 
-#  ---probe signal---
-
-net probe-in     =>  motion.probe-input
-
 #  ---motion control signals---
 
 net machine-is-enabled        <=  motion.motion-enabled
@@ -273,9 +269,9 @@ net estop-out     =>  iocontrol.0.emc-enable-in
 
 #  ---manual tool change signals---
 
-loadusr -W hal_manualtoolchange
-net tool-change-request     iocontrol.0.tool-change       =>  hal_manualtoolchange.change
-net tool-change-confirmed   iocontrol.0.tool-changed      <=  hal_manualtoolchange.changed
-net tool-number             iocontrol.0.tool-prep-number  =>  hal_manualtoolchange.number
-net tool-prepare-loopback   iocontrol.0.tool-prepare      =>  iocontrol.0.tool-prepared
+#loadusr -W hal_manualtoolchange
+#net tool-change-request     iocontrol.0.tool-change       =>  hal_manualtoolchange.change
+#net tool-change-confirmed   iocontrol.0.tool-changed      <=  hal_manualtoolchange.changed
+#net tool-number             iocontrol.0.tool-prep-number  =>  hal_manualtoolchange.number
+#net tool-prepare-loopback   iocontrol.0.tool-prepare      =>  iocontrol.0.tool-prepared
 
