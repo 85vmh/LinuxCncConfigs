@@ -1,0 +1,66 @@
+<?xml version="1.0"?>
+<interface>
+  <!-- interface-requires gladevcp 0.0 -->
+  <requires lib="gtk+" version="2.16"/>
+  <!-- interface-naming-policy project-wide -->
+  <object class="GtkWindow" id="window1">
+    <property name="width_request">100</property>
+    <child>
+      <object class="GtkVBox" id="vbox1">
+        <property name="visible">True</property>
+
+        <child>
+          <object class="HAL_Table" id="button-box-active">
+            <property name="visible">True</property>
+            <property name="n_rows">5</property>
+            <property name="homogeneous">False</property>
+
+            <child>
+              <object class="HAL_HBox" id="zero-z-active">
+                <property name="visible">True</property>
+                <child>
+                  <object class="HAL_Button" id="zero-z">
+                    <property name="label" translatable="yes">Zero Z</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                  </object>
+                  <packing>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+              </object>
+              <packing>
+                <property name="top_attach">2</property>
+                <property name="bottom_attach">3</property>
+              </packing>
+            </child>
+
+            <child>
+              <object class="HAL_HBox" id="zero-x-active">
+                <property name="visible">True</property>
+                <child>
+                  <object class="HAL_Button" id="zero-x">
+                    <property name="label" translatable="yes">Zero X</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                  </object>
+                  <packing>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+              </object>
+            </child>
+
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">False</property>
+            <property name="position">2</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+  </object>
+</interface>
