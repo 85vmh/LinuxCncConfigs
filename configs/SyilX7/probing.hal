@@ -7,7 +7,7 @@ net probe-in     <=  hm2_7i76e.0.7i76.0.0.input-04-not
 net length-in    <=  hm2_7i76e.0.7i76.0.0.input-05-not
 
 net probe-in     =>  or2.0.in0
-net probe-in     =>  or2.0.in1
+net length-in     =>  or2.0.in1
 
 net probe-or-length or2.0.out
 net probe-or-length motion.probe-input
