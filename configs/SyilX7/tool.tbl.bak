@@ -1,5 +1,6 @@
-T0 P0 D2 ;touch probe 
-T2 P2 Z347.225 D4 ;twist drill 
-T1 P1 Z336.66 D6 ;2 flute end mill 
-T3 P3 Z80.02 D63 ;face mill 
-T4 P4 Z322.727 D6 ;chamfer mill 
+T2 P2 Z-12.8832 D4 ;twist drill 
+T1 P1 Z-23.5422 D6 ;2 flute end mill 
+T3 P3 Z-31.3407 D63 ;face mill 
+T4 P4 Z-37.5697 D6 ;chamfer mill 
+T100 P100 Z-359.755 D2 ;touch probe 
+T5 P5 Z-30.0 D3.3 ;twist drill 
