@@ -1,6 +1,9 @@
-T2 P2 D4.000000 Z-12.883200 ;twist drill 
-T1 P1 D6.000000 Z-23.542200 ;2 flute end mill 
-T3 P3 D63.000000 Z-31.340700 ;face mill 
-T4 P4 D6.000000 Z-37.569700 ;chamfer mill 
+T2 P2 D4.000000 Z+24.443200 ;twist drill 
+T1 P1 D6.000000 Z+12.829500 ;2 flute end mill 
+T3 P3 D63.000000 Z+5.795170 ;face mill 
+T4 P4 D6.000000 Z-17.021750 ;chamfer mill 
 T100 P100 D2.000000 Z-359.755000 ;touch probe 
-T5 P5 D3.300000 Z-24.770333 ;twist drill 
+T5 P5 D3.300000 Z-24.770300 ;twist drill 
+T6 P6 D18.180000 ;5mm radius mill 
+T7 P7 D14.000000 ;ball end mill 
+T8 P8 ;Drill chuck 
