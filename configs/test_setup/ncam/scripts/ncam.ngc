@@ -50,15 +50,15 @@ G7 (Diameter = 7, Radius = 8)
 (begin Tool Change)
 (author : Fernand Veilleux)
 
-o<tool_change_001_tlc> if [[1 EQ 3] AND [1 GT 0]]
-	M61 Q1
+o<tool_change_001_tlc> if [[1 EQ 3] AND [4 GT 0]]
+	M61 Q4
 o<tool_change_001_tlc> endif
 
-o<tool_change_001_act> if [1 AND [1 NE #5400]]
+o<tool_change_001_act> if [1 AND [4 NE #5400]]
 	M9  (coolant off)
-	T1 M6
+	T4 M6
 	o<tool_change_001_lc> if [1 GE 1]
-		G43 H1
+		G43 H4
 	o<tool_change_001_lc> endif
 o<tool_change_001_act> endif
 
@@ -66,8 +66,8 @@ o<tool_change_001_act> endif
 #<_spindle_dir>  =  4
 #<_cooling_mode> =  9
 
-#<_rough_feed>   =  0.100000
-#<_rough_cut>    =  0.508000
+#<_rough_feed>   =  0.300000
+#<_rough_cut>    =  1.000000
 
 #<_finish_feed>  =  0.050000
 #<_finish_cut>   =  0.254000
@@ -92,14 +92,26 @@ F#<_rough_feed>
 (end Tool Change)
 
 
-(begin Turning)
+(begin Taper IDA)
 (author : Fernand Veilleux)
 
-o<turning_001_act> if [1]
-	o<turning> CALL [11.000000] [8.000000] [2.000000] [-10.000000] [1] [0.000000] [1]
-o<turning_001_act> endif
+o<taper_ida_001_act> if [1]
+	o<taper_id> CALL [15.000000] [32.500000] [0.500000] [8.300000] [0] [1]
+o<taper_ida_001_act> endif
 
-(end Turning)
+(end Taper IDA)
+
+
+(begin Taper IDL)
+(author : Fernand Veilleux)
+
+o<taper_idl_001_act> if [1]
+	o<line> CALL [0.000000] [-15.500000 / 2] [-20.200000] [-32.500000 / 2]
+
+	o<taper_id> CALL [15.500000] [32.500000] [0.000000] [#<_line_phi>] [1] [1]
+o<taper_idl_001_act> endif
+
+(end Taper IDL)
 
 
 M2

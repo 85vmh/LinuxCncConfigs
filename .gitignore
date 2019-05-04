@@ -1,0 +1,5 @@
+*~
+/nc_files/*
+/configs/mill_touch_sim/*
+/configs/sim.qtpyvcp/*
+/configs/test_setup/ncam/catalogs/lathe/projects/*

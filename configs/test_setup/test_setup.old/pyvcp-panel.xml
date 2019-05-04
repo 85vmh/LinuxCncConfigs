@@ -1,0 +1,28 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<pyvcp>
+         <vbox>
+         <relief>GROOVE</relief>         
+         <bd>2</bd>
+                <label>
+                        <text>"Spindle Speed:"</text>
+                        <font>("Helvetica",16)</font>
+                </label>
+                <bar>
+                        <halpin>"spindle-speed"</halpin>
+			<max_>2500</max_>
+                </bar>
+              
+                <hbox>
+                    <label>
+                        <text>"spindle-at-speed PIN: "</text>
+                        <font>("Helvetica",12)</font>
+                    </label>
+                    <led>
+                        <halpin>"spindle-at-speed-led"</halpin> 
+                        <size>16</size> 
+                        <on_color>"green"</on_color>
+                        <off_color>"red"</off_color>
+                    </led>
+                </hbox>
+        </vbox>
+</pyvcp>
