@@ -8,7 +8,7 @@ addf and2.vc servo-thread
 net axis.0.pos-relative halui.axis.x.pos-relative => vc-p4s.axis.0.pos-relative
 net axis.1.pos-relative halui.axis.y.pos-relative => vc-p4s.axis.1.pos-relative
 net axis.2.pos-relative halui.axis.z.pos-relative => vc-p4s.axis.2.pos-relative
-#net axis.3.pos-relative halui.axis.a.pos-relative => vc-p4s.axis.3.pos-relative
+net axis.3.pos-relative halui.axis.a.pos-relative => vc-p4s.axis.3.pos-relative
 #net axis.4.pos-relative halui.axis.b.pos-relative => vc-p4s.axis.4.pos-relative
 #net axis.5.pos-relative halui.axis.c.pos-relative => vc-p4s.axis.5.pos-relative
 
@@ -16,23 +16,36 @@ net axis.2.pos-relative halui.axis.z.pos-relative => vc-p4s.axis.2.pos-relative
 net axis.0.jog-en vc-p4s.axis.0.jog-enable => axis.x.jog-enable
 net axis.1.jog-en vc-p4s.axis.1.jog-enable => axis.y.jog-enable
 net axis.2.jog-en vc-p4s.axis.2.jog-enable => axis.z.jog-enable
+net axis.3.jog-en vc-p4s.axis.3.jog-enable => axis.a.jog-enable 
+
 net jog-scale vc-p4s.jog-scale => joint.0.jog-scale axis.x.jog-scale
 net jog-scale vc-p4s.jog-scale => joint.1.jog-scale axis.y.jog-scale
 net jog-scale vc-p4s.jog-scale => joint.2.jog-scale axis.z.jog-scale
+net jog-scale vc-p4s.jog-scale => joint.3.jog-scale axis.a.jog-scale
+
 net jog-counts vc-p4s.jog-counts => joint.0.jog-counts axis.x.jog-counts
 net jog-counts vc-p4s.jog-counts => joint.1.jog-counts axis.y.jog-counts
 net jog-counts vc-p4s.jog-counts => joint.2.jog-counts axis.z.jog-counts
+net jog-counts vc-p4s.jog-counts => joint.3.jog-counts axis.a.jog-counts
+
 net jog.0.cont-plus  vc-p4s.jog.0.plus  => halui.axis.x.plus 
 net jog.0.cont-minus vc-p4s.jog.0.minus => halui.axis.x.minus 
+
 net jog.1.cont-plus  vc-p4s.jog.1.plus  => halui.axis.y.plus 
 net jog.1.cont-minus vc-p4s.jog.1.minus => halui.axis.y.minus 
+
 net jog.2.cont-plus  vc-p4s.jog.2.plus  => halui.axis.z.plus 
 net jog.2.cont-mimus vc-p4s.jog.2.minus => halui.axis.z.minus 
+
+net jog.3.cont-plus  vc-p4s.jog.3.plus  => halui.axis.a.plus 
+net jog.3.cont-mimus vc-p4s.jog.3.minus => halui.axis.a.minus 
+
 net jog-speed vc-p4s.jog.velocity => halui.axis.jog-speed
 net motion-in-position motion.in-position => vc-p4s.is-moving
 setp axis_0_max_velocity [JOINT_0]MAX_VELOCITY
 setp axis_1_max_velocity [JOINT_1]MAX_VELOCITY
 setp axis_2_max_velocity [JOINT_2]MAX_VELOCITY
+setp axis_3_max_velocity [JOINT_3]MAX_VELOCITY
 
 # 3---FOR 4TH AXIS, REMOVE # FROM THE FOLLOWING LINES
 #net axis.3.jog-en vc-p4s.axis.a.jog-enable => axis.a.jog-enable

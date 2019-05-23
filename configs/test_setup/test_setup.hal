@@ -106,15 +106,15 @@ net x-pos-limit     =>  joint.0.pos-lim-sw-in
 #  AXIS Z
 #*******************
 
-setp   pid.z.Pgain     [JOINT_2]P
-setp   pid.z.Igain     [JOINT_2]I
-setp   pid.z.Dgain     [JOINT_2]D
-setp   pid.z.bias      [JOINT_2]BIAS
-setp   pid.z.FF0       [JOINT_2]FF0
-setp   pid.z.FF1       [JOINT_2]FF1
-setp   pid.z.FF2       [JOINT_2]FF2
-setp   pid.z.deadband  [JOINT_2]DEADBAND
-setp   pid.z.maxoutput [JOINT_2]MAX_OUTPUT
+setp   pid.z.Pgain     [JOINT_1]P
+setp   pid.z.Igain     [JOINT_1]I
+setp   pid.z.Dgain     [JOINT_1]D
+setp   pid.z.bias      [JOINT_1]BIAS
+setp   pid.z.FF0       [JOINT_1]FF0
+setp   pid.z.FF1       [JOINT_1]FF1
+setp   pid.z.FF2       [JOINT_1]FF2
+setp   pid.z.deadband  [JOINT_1]DEADBAND
+setp   pid.z.maxoutput [JOINT_1]MAX_OUTPUT
 setp   pid.z.error-previous-target true
 setp   pid.z.maxerror .0005
 
@@ -127,31 +127,31 @@ net z-output        =>  pid.z.output
 
 # Step Gen signals/setup
 
-setp   hm2_7i76e.0.stepgen.01.dirsetup        [JOINT_2]DIRSETUP
-setp   hm2_7i76e.0.stepgen.01.dirhold         [JOINT_2]DIRHOLD
-setp   hm2_7i76e.0.stepgen.01.steplen         [JOINT_2]STEPLEN
-setp   hm2_7i76e.0.stepgen.01.stepspace       [JOINT_2]STEPSPACE
-setp   hm2_7i76e.0.stepgen.01.position-scale  [JOINT_2]STEP_SCALE
+setp   hm2_7i76e.0.stepgen.01.dirsetup        [JOINT_1]DIRSETUP
+setp   hm2_7i76e.0.stepgen.01.dirhold         [JOINT_1]DIRHOLD
+setp   hm2_7i76e.0.stepgen.01.steplen         [JOINT_1]STEPLEN
+setp   hm2_7i76e.0.stepgen.01.stepspace       [JOINT_1]STEPSPACE
+setp   hm2_7i76e.0.stepgen.01.position-scale  [JOINT_1]STEP_SCALE
 setp   hm2_7i76e.0.stepgen.01.step_type        0
 setp   hm2_7i76e.0.stepgen.01.control-type     1
-setp   hm2_7i76e.0.stepgen.01.maxaccel         [JOINT_2]STEPGEN_MAXACCEL
-setp   hm2_7i76e.0.stepgen.01.maxvel           [JOINT_2]STEPGEN_MAXVEL
+setp   hm2_7i76e.0.stepgen.01.maxaccel         [JOINT_1]STEPGEN_MAXACCEL
+setp   hm2_7i76e.0.stepgen.01.maxvel           [JOINT_1]STEPGEN_MAXVEL
 
 # ---closedloop stepper signals---
 
-net z-pos-cmd    <= joint.2.motor-pos-cmd
-net z-vel-cmd    <= joint.2.vel-cmd
+net z-pos-cmd    <= joint.1.motor-pos-cmd
+net z-vel-cmd    <= joint.1.vel-cmd
 net z-output     <= hm2_7i76e.0.stepgen.01.velocity-cmd
 net z-pos-fb     <= hm2_7i76e.0.stepgen.01.position-fb
-net z-pos-fb     => joint.2.motor-pos-fb
-net z-enable     <= joint.2.amp-enable-out
+net z-pos-fb     => joint.1.motor-pos-fb
+net z-enable     <= joint.1.amp-enable-out
 net z-enable     => hm2_7i76e.0.stepgen.01.enable
 
 # ---setup home / limit switch signals---
 
-net max-home-z     =>  joint.2.home-sw-in
-net z-neg-limit     =>  joint.2.neg-lim-sw-in
-net max-home-z     =>  joint.2.pos-lim-sw-in
+net max-home-z     =>  joint.1.home-sw-in
+net z-neg-limit     =>  joint.1.neg-lim-sw-in
+net max-home-z     =>  joint.1.pos-lim-sw-in
 
 #*******************
 #  SPINDLE S
@@ -234,7 +234,7 @@ net jog-x-pos             halui.axis.x.plus
 net jog-x-neg             halui.axis.x.minus
 net jog-x-analog          halui.axis.x.analog
 net joint-select-c        halui.axis.z.select
-net z-is-homed            halui.joint.2.is-homed
+net z-is-homed            halui.joint.1.is-homed
 net jog-z-pos             halui.axis.z.plus
 net jog-z-neg             halui.axis.z.minus
 net jog-z-analog          halui.axis.z.analog

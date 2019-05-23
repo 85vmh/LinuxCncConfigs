@@ -8,7 +8,7 @@ loadrt [EMCMOT]EMCMOT servo_period_nsec=[EMCMOT]SERVO_PERIOD num_joints=[KINS]JO
 loadrt hostmot2
 loadrt hm2_eth board_ip="10.10.10.10" config="firmware=hm2/7i76/7i76e.BIT num_encoders=1 num_pwmgens=0 num_stepgens=4 sserial_port_0=2xxxx" 
 setp    hm2_7i76e.0.watchdog.timeout_ns 5000000
-loadrt pid names=pid.x,pid.y,pid.z,pid.s
+loadrt pid names=pid.x,pid.y,pid.z,pid.a,pid.s
 
 addf hm2_7i76e.0.read          servo-thread
 addf motion-command-handler   servo-thread
@@ -16,6 +16,7 @@ addf motion-controller        servo-thread
 addf pid.x.do-pid-calcs       servo-thread
 addf pid.y.do-pid-calcs       servo-thread
 addf pid.z.do-pid-calcs       servo-thread
+addf pid.a.do-pid-calcs       servo-thread
 addf pid.s.do-pid-calcs       servo-thread
 addf hm2_7i76e.0.write         servo-thread
 setp hm2_7i76e.0.dpll.01.timer-us -50
@@ -191,6 +192,58 @@ net both-home-z     =>  joint.2.neg-lim-sw-in
 net both-home-z     =>  joint.2.pos-lim-sw-in
 
 #*******************
+#  AXIS A
+#*******************
+
+setp   pid.a.Pgain     [JOINT_3]P
+setp   pid.a.Igain     [JOINT_3]I
+setp   pid.a.Dgain     [JOINT_3]D
+setp   pid.a.bias      [JOINT_3]BIAS
+setp   pid.a.FF0       [JOINT_3]FF0
+setp   pid.a.FF1       [JOINT_3]FF1
+setp   pid.a.FF2       [JOINT_3]FF2
+setp   pid.a.deadband  [JOINT_3]DEADBAND
+setp   pid.a.maxoutput [JOINT_3]MAX_OUTPUT
+setp   pid.a.error-previous-target true
+setp   pid.a.maxerror .0005
+
+net a-index-enable  <=> pid.a.index-enable
+net a-enable        =>  pid.a.enable
+net a-pos-cmd       =>  pid.a.command
+net a-vel-cmd       =>  pid.a.command-deriv
+net a-pos-fb        =>  pid.a.feedback
+net a-output        =>  pid.a.output
+
+# Step Gen signals/setup
+
+setp   hm2_7i76e.0.stepgen.03.dirsetup        [JOINT_3]DIRSETUP
+setp   hm2_7i76e.0.stepgen.03.dirhold         [JOINT_3]DIRHOLD
+setp   hm2_7i76e.0.stepgen.03.steplen         [JOINT_3]STEPLEN
+setp   hm2_7i76e.0.stepgen.03.stepspace       [JOINT_3]STEPSPACE
+setp   hm2_7i76e.0.stepgen.03.position-scale  [JOINT_3]STEP_SCALE
+setp   hm2_7i76e.0.stepgen.03.step_type        0
+setp   hm2_7i76e.0.stepgen.03.control-type     1
+setp   hm2_7i76e.0.stepgen.03.maxaccel         [JOINT_3]STEPGEN_MAXACCEL
+setp   hm2_7i76e.0.stepgen.03.maxvel           [JOINT_3]STEPGEN_MAXVEL
+
+# ---closedloop stepper signals---
+
+net a-pos-cmd    <= joint.3.motor-pos-cmd
+net a-vel-cmd    <= joint.3.vel-cmd
+net a-output     => hm2_7i76e.0.stepgen.03.velocity-cmd
+net a-pos-fb     <= hm2_7i76e.0.stepgen.03.position-fb
+net a-pos-fb     => joint.3.motor-pos-fb
+net a-enable     <= joint.3.amp-enable-out
+net a-enable     => hm2_7i76e.0.stepgen.03.enable
+
+# ---setup home / limit switch signals---
+
+#net both-home-z     =>  joint.2.home-sw-in
+#net both-home-z     =>  joint.2.neg-lim-sw-in
+#net both-home-z     =>  joint.2.pos-lim-sw-in
+
+
+#*******************
 #  SPINDLE S
 #*******************
 
@@ -240,12 +293,19 @@ sets spindle-at-speed true
 net joint-select-a        halui.axis.x.select
 net x-is-homed            halui.joint.0.is-homed
 net jog-x-analog          halui.axis.x.analog
+
 net joint-select-b        halui.axis.y.select
 net y-is-homed            halui.joint.1.is-homed
 net jog-y-analog          halui.axis.y.analog
+
 net joint-select-c        halui.axis.z.select
 net z-is-homed            halui.joint.2.is-homed
 net jog-z-analog          halui.axis.z.analog
+
+net joint-select-d        halui.axis.a.select
+net a-is-homed            halui.joint.3.is-homed
+net jog-a-analog          halui.axis.a.analog
+
 net jog-selected-pos      halui.axis.selected.plus
 net jog-selected-neg      halui.axis.selected.minus
 net spindle-manual-cw     halui.spindle.0.forward
