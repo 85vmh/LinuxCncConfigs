@@ -1,0 +1,83 @@
+[
+    {
+        "file": "/home/linuxcnc/linuxcnc/nc_files/SyilX7/1001.ngc", 
+        "interp_mode": "Idle", 
+        "message": "Requested tool 7 not found in the tool table", 
+        "task_mode": "Auto", 
+        "task_state": "On", 
+        "timestamp": 1559933024.852768, 
+        "type": "error"
+    }, 
+    {
+        "file": "/home/linuxcnc/linuxcnc/nc_files/SyilX7/1001.ngc", 
+        "interp_mode": "Idle", 
+        "message": "Requested tool 7 not found in the tool table", 
+        "task_mode": "Auto", 
+        "task_state": "On", 
+        "timestamp": 1559933025.852828, 
+        "type": "error"
+    }, 
+    {
+        "file": "/home/linuxcnc/linuxcnc/nc_files/SyilX7/1001.ngc", 
+        "interp_mode": "Waiting", 
+        "message": "Requested tool 7 not found in the tool table", 
+        "task_mode": "Auto", 
+        "task_state": "On", 
+        "timestamp": 1559933039.852886, 
+        "type": "error"
+    }, 
+    {
+        "file": "/home/linuxcnc/linuxcnc/nc_files/SyilX7/1001.ngc", 
+        "interp_mode": "Idle", 
+        "message": "Requested tool 7 not found in the tool table", 
+        "task_mode": "Auto", 
+        "task_state": "On", 
+        "timestamp": 1559933043.452243, 
+        "type": "error"
+    }, 
+    {
+        "file": "/home/linuxcnc/linuxcnc/nc_files/SyilX7/1001.ngc", 
+        "interp_mode": "Waiting", 
+        "message": "Requested tool 7 not found in the tool table", 
+        "task_mode": "Auto", 
+        "task_state": "On", 
+        "timestamp": 1559933046.052882, 
+        "type": "error"
+    }, 
+    {
+        "file": "/home/linuxcnc/linuxcnc/nc_files/SyilX7/1001.ngc", 
+        "interp_mode": "Waiting", 
+        "message": "Requested tool 7 not found in the tool table", 
+        "task_mode": "Auto", 
+        "task_state": "On", 
+        "timestamp": 1559933050.45258, 
+        "type": "error"
+    }, 
+    {
+        "file": "/home/linuxcnc/linuxcnc/nc_files/SyilX7/1001.ngc", 
+        "interp_mode": "Idle", 
+        "message": "Requested tool 7 not found in the tool table", 
+        "task_mode": "Auto", 
+        "task_state": "On", 
+        "timestamp": 1559933051.652846, 
+        "type": "error"
+    }, 
+    {
+        "file": "/home/linuxcnc/linuxcnc/nc_files/SyilX7/1001.ngc", 
+        "interp_mode": "Waiting", 
+        "message": "Requested tool 7 not found in the tool table", 
+        "task_mode": "Auto", 
+        "task_state": "On", 
+        "timestamp": 1559933071.252407, 
+        "type": "error"
+    }, 
+    {
+        "file": "/home/linuxcnc/linuxcnc/nc_files/SyilX7/1001.ngc", 
+        "interp_mode": "Waiting", 
+        "message": "Requested tool 7 not found in the tool table", 
+        "task_mode": "Auto", 
+        "task_state": "On", 
+        "timestamp": 1559933072.252796, 
+        "type": "error"
+    }
+]

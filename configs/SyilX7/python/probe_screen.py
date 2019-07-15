@@ -265,148 +265,6 @@ class ProbeScreenClass:
             self.gcode(s)
             time.sleep(1)
 
-
-
-    # -----------
-    # JOG BUTTONS
-    # -----------
-    def _init_jog_increments( self ):
-        # Get the increments from INI File
-        jog_increments = []
-        increments = self.inifile.find("DISPLAY", "INCREMENTS")
-        if increments:
-            if "," in increments:
-                for i in increments.split(","):
-                    jog_increments.append(i.strip())
-            else:
-                jog_increments = increments.split()
-            jog_increments.insert(0, 0)
-        else:
-            jog_increments = [0, "1,000", "0,100", "0,010", "0,001"]
-            print("**** PROBE SCREEN INFO **** \n No default jog increments entry found in [DISPLAY] of INI file")
-
-        self.jog_increments = jog_increments
-        if len( self.jog_increments ) > 5:
-            print( _( "**** PROBE SCREEN INFO ****" ) )
-            print( _( "**** To many increments given in INI File for this screen ****" ) )
-            print( _( "**** Only the first 5 will be reachable through this screen ****" ) )
-            # we shorten the incrementlist to 5 (first is default = 0)
-            self.jog_increments = self.jog_increments[0:5]
-
-        # The first radio button is created to get a radio button group
-        # The group is called according the name off  the first button
-        # We use the pressed signal, not the toggled, otherwise two signals will be emitted
-        # One from the released button and one from the pressed button
-        # we make a list of the buttons to later add the hardware pins to them
-        label = "Cont"
-        rbt0 = gtk.RadioButton( None, label )
-        rbt0.connect( "pressed", self.on_increment_changed, 0 )
-        self.steps.pack_start( rbt0, True, True, 0 )
-        rbt0.set_property( "draw_indicator", False )
-        rbt0.show()
-        rbt0.modify_bg( gtk.STATE_ACTIVE, gtk.gdk.color_parse( "#FFFF00" ) )
-        rbt0.__name__ = "rbt0"
-        self.incr_rbt_list.append( rbt0 )
-        # the rest of the buttons are now added to the group
-        # self.no_increments is set while setting the hal pins with self._check_len_increments
-        for item in range( 1, len( self.jog_increments ) ):
-            rbt = "rbt%d" % ( item )
-            rbt = gtk.RadioButton( rbt0, self.jog_increments[item] )
-            rbt.connect( "pressed", self.on_increment_changed, self.jog_increments[item] )
-            self.steps.pack_start( rbt, True, True, 0 )
-            rbt.set_property( "draw_indicator", False )
-            rbt.show()
-            rbt.modify_bg( gtk.STATE_ACTIVE, gtk.gdk.color_parse( "#FFFF00" ) )
-            rbt.__name__ = "rbt%d" % ( item )
-            self.incr_rbt_list.append( rbt )
-        self.active_increment = "rbt0"
-
-    # This is the jogging part
-    def on_increment_changed( self, widget = None, data = None ):
-        if data == 0:
-            self.distance = 0
-        else:
-            self.distance = self._parse_increment( data )
-        self.halcomp["jog-increment"] = self.distance
-        self.active_increment = widget.__name__
-
-    def _from_internal_linear_unit( self, v, unit = None ):
-        if unit is None:
-            unit = self.stat.linear_units
-        lu = ( unit or 1 ) * 25.4
-        return v * lu
-
-    def _parse_increment( self, jogincr ):
-        if jogincr.endswith( "mm" ):
-            scale = self._from_internal_linear_unit( 1 / 25.4 )
-        elif jogincr.endswith( "cm" ):
-            scale = self._from_internal_linear_unit( 10 / 25.4 )
-        elif jogincr.endswith( "um" ):
-            scale = self._from_internal_linear_unit( .001 / 25.4 )
-        elif jogincr.endswith( "in" ) or jogincr.endswith( "inch" ):
-            scale = self._from_internal_linear_unit( 1. )
-        elif jogincr.endswith( "mil" ):
-            scale = self._from_internal_linear_unit( .001 )
-        else:
-            scale = 1
-        jogincr = jogincr.rstrip( " inchmuil" )
-        if "/" in jogincr:
-            p, q = jogincr.split( "/" )
-            jogincr = float( p ) / float( q )
-        else:
-            jogincr = float( jogincr )
-        return jogincr * scale
-
-    def on_btn_jog_pressed( self, widget, data = None ):
-        # only in manual mode we will allow jogging the axis at this development state
-        self.command.mode( linuxcnc.MODE_MANUAL )
-        self.command.wait_complete()
-        self.stat.poll()
-        if not self.stat.task_mode == linuxcnc.MODE_MANUAL:
-            return
-
-        axisletter = widget.get_label()[0]
-        if not axisletter.lower() in "xyzabcuvw":
-            print ( "unknown axis %s" % axisletter )
-            return
-
-        # get the axisnumber
-        axisnumber = "xyzabcuvws".index( axisletter.lower() )
-
-        # if data = True, then the user pressed SHIFT for Jogging and
-        # want's to jog at 0.2 speed
-        if data:
-            value = 0.2
-        else:
-            value = 1
-
-        velocity = float(self.inifile.find("TRAJ", "DEFAULT_VELOCITY"))
-
-        dir = widget.get_label()[1]
-        if dir == "+":
-            direction = 1
-        else:
-            direction = -1
-
-        if self.distance <> 0:  # incremental jogging
-            self.command.jog( linuxcnc.JOG_INCREMENT, axisnumber, direction * velocity, self.distance )
-        else:  # continuous jogging
-            self.command.jog( linuxcnc.JOG_CONTINUOUS, axisnumber, direction * velocity )
-
-    def on_btn_jog_released( self, widget, data = None ):
-        axisletter = widget.get_label()[0]
-        if not axisletter.lower() in "xyzabcuvw":
-            print ( "unknown axis %s" % axisletter )
-            return
-
-        axis = "xyzabcuvw".index( axisletter.lower() )
-
-        if self.distance <> 0:
-            pass
-        else:
-            self.command.jog( linuxcnc.JOG_STOP, axis )
-
-
     # Spin  buttons
 
     def on_spbtn1_search_vel_key_press_event( self, gtkspinbutton, data = None ):
@@ -1795,124 +1653,6 @@ class ProbeScreenClass:
         self.set_zerro("XY")
 
 
-    # TOOL DIA
-    def on_tool_dia_released(self, gtkbutton, data = None):
-        self.command.mode( linuxcnc.MODE_MDI )
-        self.command.wait_complete()
-        # move XY to Tool Setter point
-        # Start gotots.ngc
-        if self.ocode ("O<gotots> call") == -1:
-            return
-        # move X - edge_lenght- xy_clearance
-        s="""G91
-        G1 X-%f
-        G90""" % (0.5 * self.tsdiam + self.spbtn1_xy_clearance.get_value())
-        if self.gcode(s) == -1:
-            return
-        if self.z_clearance_down() == -1:
-            return
-        # Start xplus.ngc
-        if self.ocode ("O<xplus> call") == -1:
-            return
-        # show X result
-        a=self.probed_position_with_offsets()
-        xpres=float(a[0])+0.5*self.spbtn1_probe_diam.get_value()
-#        self.lb_probe_xp.set_text( "%.4f" % xpres )
-        # move Z to start point up
-        if self.z_clearance_up() == -1:
-            return
-        # move to finded  point X
-        s = "G1 X%f" % xpres
-        if self.gcode(s) == -1:
-            return
-
-        # move X + tsdiam +  xy_clearance
-        aa=self.tsdiam+self.spbtn1_xy_clearance.get_value()
-        s="""G91
-        G1 X%f
-        G90""" % (aa)
-        if self.gcode(s) == -1:
-            return
-        if self.z_clearance_down() == -1:
-            return
-        # Start xminus.ngc
-
-        if self.ocode ("O<xminus> call") == -1:
-            return
-        # show X result
-        a=self.probed_position_with_offsets()
-        xmres=float(a[0])-0.5*self.spbtn1_probe_diam.get_value()
-#        self.lb_probe_xm.set_text( "%.4f" % xmres )
-        self.lenght_x()
-        xcres=0.5*(xpres+xmres)
-        self.lb_probe_xc.set_text( "%.4f" % xcres )
-        # move Z to start point up
-        if self.z_clearance_up() == -1:
-            return
-        # go to the new center of X
-        s = "G1 X%f" % xcres
-        if self.gcode(s) == -1:
-            return
-
-
-        # move Y - tsdiam/2 - xy_clearance
-        a=0.5*self.tsdiam+self.spbtn1_xy_clearance.get_value()
-        s="""G91
-        G1 Y-%f
-        G90""" % a
-        if self.gcode(s) == -1:
-            return
-        if self.z_clearance_down() == -1:
-            return
-        # Start yplus.ngc
-        if self.ocode ("O<yplus> call") == -1:
-            return
-        # show Y result
-        a=self.probed_position_with_offsets()
-        ypres=float(a[1])+0.5*self.spbtn1_probe_diam.get_value()
-#        self.lb_probe_yp.set_text( "%.4f" % ypres )
-        # move Z to start point up
-        if self.z_clearance_up() == -1:
-            return
-        # move to finded  point Y
-        s = "G1 Y%f" % ypres
-        if self.gcode(s) == -1:
-            return
-
-        # move Y + tsdiam +  xy_clearance
-        aa=self.tsdiam+self.spbtn1_xy_clearance.get_value()
-        s="""G91
-        G1 Y%f
-        G90""" % (aa)
-        if self.gcode(s) == -1:
-            return
-        if self.z_clearance_down() == -1:
-            return
-        # Start xminus.ngc
-        if self.ocode ("O<yminus> call") == -1:
-            return
-        # show Y result
-        a=self.probed_position_with_offsets()
-        ymres=float(a[1])-0.5*self.spbtn1_probe_diam.get_value()
-#        self.lb_probe_ym.set_text( "%.4f" % ymres )
-        self.lenght_y()
-        # find, show and move to finded  point
-        ycres=0.5*(ypres+ymres)
-        self.lb_probe_yc.set_text( "%.4f" % ycres )
-        diam=self.spbtn1_probe_diam.get_value() + (ymres-ypres-self.tsdiam)
-
-        self.lb_probe_d.set_text( "%.4f" % diam )
-        # move Z to start point up
-        if self.z_clearance_up() == -1:
-            return
-        self.stat.poll()
-        tmpz=self.stat.position[2] - 4
-        self.add_history(gtkbutton.get_tooltip_text(),"XcYcZD",0,xcres,0,0,0,ycres,0,0,tmpz,diam,0)
-        # move to finded  point
-        s = "G1 Y%f" % ycres
-        if self.gcode(s) == -1:
-            return
-
 #---------------------------------------
 #
 #    AUTO TOOL MEASUREMENT
@@ -2118,7 +1858,7 @@ class ProbeScreenClass:
         self.lx_in = self.builder.get_object("lx_in")
         self.ly_out = self.builder.get_object("ly_out")
         self.ly_in = self.builder.get_object("ly_in")
-        self.tool_dia = self.builder.get_object("tool_dia")
+        #self.tool_dia = self.builder.get_object("tool_dia")
 
         self.vcp_action_reload = self.builder.get_object("vcp_action_reload")
 
@@ -2183,13 +1923,6 @@ class ProbeScreenClass:
         self.halcomp["ps_offs_angle"] = self.spbtn_offs_angle.get_value()
         self.halcomp["ps_error"] = 0.
 
-        # For JOG
-        self.steps = self.builder.get_object("steps")
-        self.incr_rbt_list = []    # we use this list to add hal pin to the button later
-        self.jog_increments = []   # This holds the increment values
-        self.distance = 0          # This global will hold the jog distance
-        self.halcomp.newpin( "jog-increment", hal.HAL_FLOAT, hal.HAL_OUT )
-        self._init_jog_increments()
 
         # For Auto Tool Measurement
         # set the title of the window
@@ -2216,7 +1949,7 @@ class ProbeScreenClass:
         self.xpos, self.ypos, self.zpos, self.maxprobe, self.tsdiam, self.revrott = self.get_tool_sensor_data()
         if not self.xpos or not self.ypos or not self.zpos or not self.maxprobe or not self.tsdiam or not self.revrott :
             self.chk_use_tool_measurement.set_active( False )
-            self.tool_dia.set_sensitive( False )
+            #self.tool_dia.set_sensitive( False )
             print( _( "**** PROBE SCREEN INFO ****" ) )
             print( _( "**** no valid probe config in INI File ****" ) )
             print( _( "**** disabled auto tool measurement ****" ) )

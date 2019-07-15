@@ -24,19 +24,22 @@ setp hm2_7i76e.0.stepgen.timer-number 1
 
 # external output signals
 
-net coolant-mist  <= hm2_7i76e.0.7i76.0.0.output-00
+#enable the contactor that powers all the components
+setp hm2_7i76e.0.7i76.0.0.output-00 true
+
+net coolant-mist  <= hm2_7i76e.0.7i76.0.0.output-01
+net coolant-flood  <= hm2_7i76e.0.7i76.0.0.output-02
 
 # external input signals
 
+# --- BOTH-HOME-X ---
+net both-home-x     <=  hm2_7i76e.0.7i76.0.0.input-00
 
 # --- BOTH-HOME-Y ---
-net both-home-y     <=  hm2_7i76e.0.7i76.0.0.input-16
-
-# --- BOTH-HOME-X ---
-net both-home-x     <=  hm2_7i76e.0.7i76.0.0.input-17
+net both-home-y     <=  hm2_7i76e.0.7i76.0.0.input-01
 
 # --- BOTH-HOME-Z ---
-net both-home-z     <=  hm2_7i76e.0.7i76.0.0.input-18
+net both-home-z     <=  hm2_7i76e.0.7i76.0.0.input-02
 
 #*******************
 #  AXIS X
@@ -331,9 +334,9 @@ net estop-out     =>  iocontrol.0.emc-enable-in
 
 #  ---manual tool change signals---
 
-#loadusr -W hal_manualtoolchange
-#net tool-change-request     iocontrol.0.tool-change       =>  hal_manualtoolchange.change
-#net tool-change-confirmed   iocontrol.0.tool-changed      <=  hal_manualtoolchange.changed
-#net tool-number             iocontrol.0.tool-prep-number  =>  hal_manualtoolchange.number
-#net tool-prepare-loopback   iocontrol.0.tool-prepare      =>  iocontrol.0.tool-prepared
+loadusr -W hal_manualtoolchange
+net tool-change-request     iocontrol.0.tool-change       =>  hal_manualtoolchange.change
+net tool-change-confirmed   iocontrol.0.tool-changed      <=  hal_manualtoolchange.changed
+net tool-number             iocontrol.0.tool-prep-number  =>  hal_manualtoolchange.number
+net tool-prepare-loopback   iocontrol.0.tool-prepare      =>  iocontrol.0.tool-prepared
 

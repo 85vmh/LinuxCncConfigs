@@ -3,8 +3,8 @@
 loadrt or2
 addf or2.0       servo-thread
 
-net probe-in     <=  hm2_7i76e.0.7i76.0.0.input-04-not
-net length-in    <=  hm2_7i76e.0.7i76.0.0.input-05-not
+net probe-in     <=  hm2_7i76e.0.7i76.0.0.input-09-not
+net length-in    <=  hm2_7i76e.0.7i76.0.0.input-10-not
 
 net probe-in     =>  or2.0.in0
 net length-in     =>  or2.0.in1
