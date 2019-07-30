@@ -1,13 +1,13 @@
 # Here we have the settings needed to make probe screen work.
 
-loadrt or2
-addf or2.0       servo-thread
+loadrt or2 names=or2.input
+addf or2.input       servo-thread
 
 net probe-in     <=  hm2_7i76e.0.7i76.0.0.input-09-not
 net length-in    <=  hm2_7i76e.0.7i76.0.0.input-10-not
 
-net probe-in     =>  or2.0.in0
-net length-in     =>  or2.0.in1
+net probe-in     =>  or2.input.in0
+net length-in     =>  or2.input.in1
 
-net probe-or-length or2.0.out
-net probe-or-length motion.probe-input
+net  probe-or-length   or2.input.out
+net  probe-or-length   motion.probe-input

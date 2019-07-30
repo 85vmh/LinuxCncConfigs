@@ -100,13 +100,29 @@ net program.is-idle    halui.program.is-idle    =>  vc-p4s.program.is-idle
 net program.is-paused  halui.program.is-paused  =>  vc-p4s.program.is-paused
 net program.is-running halui.program.is-running =>  vc-p4s.program.is-running
 
-net program-start-btn halui.mode.auto and2.vc.in0 <=  vc-p4s.program.run  
-net program-run-ok and2.vc.in1 <= halui.mode.is-auto
-net remote-program-run halui.program.run <= and2.vc.out
+#net program-start-btn   halui.mode.auto and2.vc.in0      <=  vc-p4s.program.run  
+#net program-run-ok      and2.vc.in1                      <= halui.mode.is-auto
+#net remote-program-run  halui.program.run                <= and2.vc.out
 
-net program.pause  vc-p4s.program.pause  => halui.program.pause
-net program.resume vc-p4s.program.resume => halui.program.resume
-net program.stop   vc-p4s.program.stop   => halui.program.stop
+net program-start-btn <= vc-p4s.program.run
+#net program-start-btn => halui.mode.auto
+net program-start-btn => and2.vc.in0
+
+net program-run-ok <= halui.mode.is-auto
+net program-run-ok => and2.vc.in1
+
+net remote-program-run  <= and2.vc.out
+
+#these lines are commented out because they conflict with physical_buttons.hal
+#net program.pause  vc-p4s.program.pause  => halui.program.pause
+#net program.resume vc-p4s.program.resume => halui.program.resume
+
+#these are the replacement lines
+net program.pause  <= vc-p4s.program.pause
+net program.resume <= vc-p4s.program.resume
+
+net program.stop  <= vc-p4s.program.stop
+net program.stop  => halui.program.stop
 
 # 11---ZERO
 net zero-x vc-p4s.zero-x => halui.mdi-command-05 

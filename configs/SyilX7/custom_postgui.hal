@@ -11,3 +11,15 @@
 #net tool-changed           probe.toolchange-changed   <=   iocontrol.0.tool-changed
 #net tool-prep-number       probe.toolchange-number    <=   iocontrol.0.tool-prep-number
 #net tool-prep-loop         iocontrol.0.tool-prepare   <=   iocontrol.0.tool-prepared
+
+
+#Link override encoders from the control panel
+
+setp gmoccapy.feed.feed-override.count-enable          true
+setp gmoccapy.spindle.spindle-override.count-enable    true
+
+net custom-control.feed-override            gmoccapy.feed.feed-override.counts        <=  hm2_7i76e.0.7i76.0.0.enc0.count
+net custom-control.spindle-override         gmoccapy.spindle.spindle-override.counts  <=  hm2_7i76e.0.7i76.0.0.enc1.count
+
+net custom-control.feed-override.reset      gmoccapy.feed.reset-feed-override        <=  hm2_7i76e.0.7i76.0.0.input-06
+net custom-control.spindle-override.reset   gmoccapy.spindle.reset-spindle-override  <=  hm2_7i76e.0.7i76.0.0.input-07
