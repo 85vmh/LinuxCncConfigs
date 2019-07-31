@@ -1,0 +1,231 @@
+# 0---vc-p4s Control Pendant
+loadusr -W vc-p4s
+
+loadrt and2 names=and2.vc,and2.pause,and2.resume,and2.run,and2.step
+loadrt or2 names=or2.pause_resume,or2.pause,or2.resume,or2.run,or2.auto
+loadrt toggle count=1
+loadrt toggle2nist count=1
+
+addf and2.vc            servo-thread
+addf and2.pause         servo-thread
+addf and2.resume        servo-thread
+addf and2.run           servo-thread
+addf and2.step          servo-thread
+addf or2.pause_resume   servo-thread
+addf or2.pause          servo-thread
+addf or2.resume         servo-thread
+addf or2.run            servo-thread
+addf or2.auto           servo-thread
+addf toggle.0           servo-thread
+addf toggle2nist.0      servo-thread
+
+# 1---LCD reletive Coordinates
+net axis.0.pos-relative halui.axis.x.pos-relative => vc-p4s.axis.0.pos-relative
+net axis.1.pos-relative halui.axis.y.pos-relative => vc-p4s.axis.1.pos-relative
+net axis.2.pos-relative halui.axis.z.pos-relative => vc-p4s.axis.2.pos-relative
+net axis.3.pos-relative halui.axis.a.pos-relative => vc-p4s.axis.3.pos-relative
+#net axis.4.pos-relative halui.axis.b.pos-relative => vc-p4s.axis.4.pos-relative
+#net axis.5.pos-relative halui.axis.c.pos-relative => vc-p4s.axis.5.pos-relative
+
+# 2---JOG
+net axis.0.jog-en vc-p4s.axis.0.jog-enable => axis.x.jog-enable
+net axis.1.jog-en vc-p4s.axis.1.jog-enable => axis.y.jog-enable
+net axis.2.jog-en vc-p4s.axis.2.jog-enable => axis.z.jog-enable
+net axis.3.jog-en vc-p4s.axis.3.jog-enable => axis.a.jog-enable 
+
+net jog-scale vc-p4s.jog-scale => joint.0.jog-scale axis.x.jog-scale
+net jog-scale vc-p4s.jog-scale => joint.1.jog-scale axis.y.jog-scale
+net jog-scale vc-p4s.jog-scale => joint.2.jog-scale axis.z.jog-scale
+net jog-scale vc-p4s.jog-scale => joint.3.jog-scale axis.a.jog-scale
+
+net jog-counts vc-p4s.jog-counts => joint.0.jog-counts axis.x.jog-counts
+net jog-counts vc-p4s.jog-counts => joint.1.jog-counts axis.y.jog-counts
+net jog-counts vc-p4s.jog-counts => joint.2.jog-counts axis.z.jog-counts
+net jog-counts vc-p4s.jog-counts => joint.3.jog-counts axis.a.jog-counts
+
+net jog.0.cont-plus  vc-p4s.jog.0.plus  => halui.axis.x.plus 
+net jog.0.cont-minus vc-p4s.jog.0.minus => halui.axis.x.minus 
+
+net jog.1.cont-plus  vc-p4s.jog.1.plus  => halui.axis.y.plus 
+net jog.1.cont-minus vc-p4s.jog.1.minus => halui.axis.y.minus 
+
+net jog.2.cont-plus  vc-p4s.jog.2.plus  => halui.axis.z.plus 
+net jog.2.cont-mimus vc-p4s.jog.2.minus => halui.axis.z.minus 
+
+net jog.3.cont-plus  vc-p4s.jog.3.plus  => halui.axis.a.plus 
+net jog.3.cont-mimus vc-p4s.jog.3.minus => halui.axis.a.minus 
+
+net jog-speed vc-p4s.jog.velocity => halui.axis.jog-speed
+net motion-in-position motion.in-position => vc-p4s.is-moving
+setp axis_0_max_velocity [JOINT_0]MAX_VELOCITY
+setp axis_1_max_velocity [JOINT_1]MAX_VELOCITY
+setp axis_2_max_velocity [JOINT_2]MAX_VELOCITY
+setp axis_3_max_velocity [JOINT_3]MAX_VELOCITY
+
+# 3---FOR 4TH AXIS, REMOVE # FROM THE FOLLOWING LINES
+#net axis.3.jog-en vc-p4s.axis.a.jog-enable => axis.a.jog-enable
+#net jog-scale vc-p4s.jog-scale => joint.3.jog-scale axis.a.jog-scale 
+#net jog-counts vc-p4s.jog-counts => joint.3.jog-counts axis.a.jog-counts 
+#net jog.3.cont-plus  vc-p4s.jog.3.plus  => halui.axis.a.plus 
+#net jog.3.cont-mimus vc-p4s.jog.3.minus => halui.axis.a.minus 
+#setp axis_3_max_velocity [JOINT_3]MAX_VELOCITY
+
+# 4---FOR 5TH AXIS, REMOVE # FROM THE FOLLOWING LINES
+#net axis.4.jog-en vc-p4s.axis.b.jog-enable => axis.b.jog-enable
+#net jog-scale vc-p4s.jog-scale => joint.4.jog-scale axis.b.jog-scale
+#net jog-counts vc-p4s.jog-counts => joint.4.jog-counts axis.b.jog-counts
+#net jog.4.cont-plus  vc-p4s.jog.4.plus  => halui.axis.b.plus 
+#net jog.4.cont-mimus vc-p4s.jog.4.minus => halui.axis.b.minus
+#setp axis_4_max_velocity [JOINT_4]MAX_VELOCITY
+
+# 5--FOR 6TH AXIS, REMOVE # FROM THE FOLLOWING LINES
+#net axis.5.jog-en vc-p4s.axis.c.jog-enable => axis.c.jog-enable
+#net jog-scale vc-p4s.jog-scale => joint.5.jog-scale axis.c.jog-scale 
+#net jog-counts vc-p4s.jog-counts => joint.5.jog-counts axis.c.jog-counts 
+#net jog.5.cont-plus  vc-p4s.jog.5.plus  => halui.axis.c.plus 
+#net jog.5.cont-mimus vc-p4s.jog.5.minus => halui.axis.c.minus 
+#setp axis_5_max_velocity [JOINT_5]MAX_VELOCITY
+
+# 6---FEED OVERRIDE
+setp halui.feed-override.scale 0.001
+net feed-enable vc-p4s.feed-override.count.enable => halui.feed-override.count-enable 
+net feedrate-counts vc-p4s.feedrate-counts => halui.feed-override.counts
+net feed.value halui.feed-override.value => vc-p4s.feed-override.value 
+
+# 7---RAPID OVERRIDE
+setp halui.rapid-override.scale 0.001
+net rapid-enable vc-p4s.rapid-override.count.enable => halui.rapid-override.count-enable 
+net rapid-counts vc-p4s.rapid-counts => halui.rapid-override.counts
+net rapid.value halui.rapid-override.value => vc-p4s.rapid-override.value 
+
+# 8---MAX VELOCITY
+setp halui.max-velocity.scale 0.001
+net max-enable vc-p4s.max-velocity.count.enable => halui.max-velocity.count-enable 
+net max-counts vc-p4s.max-counts => halui.max-velocity.counts
+net max.value halui.max-velocity.value => vc-p4s.max-velocity.value 
+
+# 9---SPINDLE OVERRIDE
+setp halui.spindle.0.override.scale 0.001
+#net spindle-enable vc-p4s.spindle-override.count.enable => halui.spindle.0.override.count-enable 
+net spindle-counts vc-p4s.spindle-counts => halui.spindle.0.override.counts
+net spindle.value halui.spindle.0.override.value => vc-p4s.spindle-override.value
+
+# 10---PROGRAM - this sections also handles the physical Pause/Resume and Run/Step buttons
+#reading into sigbals the input pins from external buttons and from the pendant
+net external-run-step.signal        <= hm2_7i76e.0.7i76.0.0.input-04     #(the PIN where the green btn is wired)
+net external-pause-resume.signal    <= hm2_7i76e.0.7i76.0.0.input-05-not #(the PIN where the red btn is wired)
+net pendant-run.signal              <= vc-p4s.program.run
+net pendant-pause.signal            <= vc-p4s.program.pause
+net pendant-resume.signal           <= vc-p4s.program.resume
+net pendant-stop.signal             <= vc-p4s.program.stop
+
+net program-is-idle.signal          <= halui.program.is-idle
+net program-is-paused.signal        <= halui.program.is-paused
+net program-is-running.signal       <= halui.program.is-running
+net mode-is-auto.signal             <= halui.mode.is-auto
+
+#writing signals to output pins of the pendant
+net program-is-idle.signal          => vc-p4s.program.is-idle
+net program-is-paused.signal        => vc-p4s.program.is-paused
+net program-is-running.signal       => vc-p4s.program.is-running
+
+#computing the value for the output pins of linux
+net external-pause-resume.signal    => and2.pause.in0
+net program-is-paused.signal        => and2.pause.in1
+net combined-pause.signal           <= and2.pause.out
+
+net external-pause-resume.signal    => and2.resume.in0
+net program-is-running.signal       => and2.resume.in1
+net combined-resume.signal          <= and2.resume.out
+
+net combined-pause.signal           => or2.pause_resume.in0
+net combined-resume.signal          => or2.pause_resume.in1
+net external-toggle.signal          <= or2.pause_resume.out
+net external-toggle.signal          => toggle.0.in
+
+net external-toggle-nist.signal     <= toggle.0.out
+net external-toggle-nist.signal     => toggle2nist.0.in
+net program-is-paused.signal        => toggle2nist.0.is-on
+
+net external-pause.signal           <= toggle2nist.0.on
+net external-resume.signal          <= toggle2nist.0.off
+
+net pendant-pause.signal            => or2.pause.in0
+net external-pause.signal           => or2.pause.in1
+net merged-pause.signal             <= or2.pause.out
+net merged-pause.signal             => halui.program.pause
+
+net pendant-resume.signal           => or2.resume.in0
+net external-resume.signal          => or2.resume.in1
+net merged-resume.signal            <= or2.resume.out
+net merged-resume.signal            => halui.program.resume
+
+net pendant-run.signal              => and2.vc.in0
+net mode-is-auto.signal             => and2.vc.in1
+net remote-program-run              <= and2.vc.out
+
+# Run/Step Section
+net external-run-step.signal        => and2.run.in0
+net program-is-idle.signal          => and2.run.in1
+net external-program-run.signal     <= and2.run.out
+
+net external-run-step.signal        => and2.step.in0
+net program-is-paused.signal        => and2.step.in1
+net do-program-step.signal          <= and2.step.out
+net do-program-step.signal          => halui.program.step
+
+net external-program-run.signal     => or2.auto.in0
+net pendant-run.signal              => or2.auto.in1
+net merged-auto.signal              <= or2.auto.out
+net merged-auto.signal              => halui.mode.auto
+
+net external-program-run.signal     => or2.run.in0
+net remote-program-run              => or2.run.in1
+net merged-run.signal               <= or2.run.out
+net merged-run.signal               => halui.program.run
+
+net pendant-stop.signal             => halui.program.stop
+
+
+# 11---ZERO
+net zero-x vc-p4s.zero-x => halui.mdi-command-05 
+net zero-y vc-p4s.zero-y => halui.mdi-command-06
+net zero-z vc-p4s.zero-z => halui.mdi-command-07 
+net x-go-to-zero vc-p4s.x-go-to-zero  => halui.mdi-command-08 
+net y-go-to-zero vc-p4s.y-go-to-zero  => halui.mdi-command-09
+net z-go-to-zero vc-p4s.z-go-to-zero  => halui.mdi-command-10
+
+# 12---SPINDLE
+net spindle.is-on halui.spindle.0.is-on =>  vc-p4s.spindle.is-on
+net spindle.start  vc-p4s.spindle.start  => halui.spindle.0.start
+net spindle.stop  vc-p4s.spindle.stop  => halui.spindle.0.stop
+
+# 13---E-STOP
+net estop vc-p4s.estop.activate => halui.estop.activate
+net reset vc-p4s.estop.reset => halui.estop.reset
+net estop-is-activated halui.estop.is-activated => vc-p4s.estop.is-activated
+
+# 14---MACHINE
+net machine-on  vc-p4s.machine.on  => halui.machine.on
+net machine-off vc-p4s.machine.off => halui.machine.off
+net machine-ison halui.machine.is-on => vc-p4s.machine.ison
+
+##### P4-S PENDANT SETTINGS #####
+
+# 15---STEP SIZE, SET 0 TO SKIP
+setp stepsize-1 	0.001
+
+# DEFAULT
+setp stepsize-2 	0.01
+
+setp stepsize-3 	0.1
+setp stepsize-4 	1
+setp stepsize-5 	0
+setp stepsize-6 	0
+setp stepsize-7 	0
+setp stepsize-8 	0
+setp stepsize-9 	0
+
+
+
+

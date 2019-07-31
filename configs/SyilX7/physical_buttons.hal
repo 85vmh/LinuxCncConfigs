@@ -1,34 +1,56 @@
-loadrt and2 names=and2.bttns0,and2.bttns1,and2.run,and2.step
-loadrt or2 names=or2.bttns,or2.pause,or2.resume,or2.run,or2.auto
+loadrt and2 names=and2.pause,and2.resume,and2.run,and2.step
+loadrt or2 names=or2.pause_resume,or2.pause,or2.resume,or2.run,or2.auto
 loadrt toggle count=1
 loadrt toggle2nist count=1
 
-addf and2.bttns0    servo-thread
-addf and2.bttns1    servo-thread
-addf and2.run    servo-thread
-addf and2.step    servo-thread
-addf or2.bttns      servo-thread
-addf or2.pause      servo-thread
-addf or2.resume     servo-thread
-addf or2.run        servo-thread
-addf or2.auto       servo-thread
-addf toggle.0       servo-thread
-addf toggle2nist.0  servo-thread
+addf and2.pause         servo-thread
+addf and2.resume        servo-thread
+addf and2.run           servo-thread
+addf and2.step          servo-thread
+addf or2.pause_resume   servo-thread
+addf or2.pause          servo-thread
+addf or2.resume         servo-thread
+addf or2.run            servo-thread
+addf or2.auto           servo-thread
+addf toggle.0           servo-thread
+addf toggle2nist.0      servo-thread
 
 # External Program Pause/Resume and Run/Step Buttons
 
 # Pause/Resume Section
-net pause-resume-btn        and2.bttns0.in0      and2.bttns1.in0                   <= hm2_7i76e.0.7i76.0.0.input-05-not #(this is the red btn)
-net program.is-paused       toggle2nist.0.is-on  and2.bttns0.in1   and2.step.in1   <= halui.program.is-paused
-net program.is-running      and2.bttns1.in1                                        <= halui.program.is-running
-net pause-sig               or2.bttns.in0                                          <= and2.bttns0.out
-net resume-sig              or2.bttns.in1                                          <= and2.bttns1.out
-net toggle-ok               toggle.0.in                                            <= or2.bttns.out
+net pause-resume-btn        and2.pause.in0      and2.resume.in0                   <= hm2_7i76e.0.7i76.0.0.input-05-not #(this is the red btn)
+net program.is-paused       toggle2nist.0.is-on  and2.pause.in1   and2.step.in1   <= halui.program.is-paused
+net program.is-running      and2.resume.in1                                        <= halui.program.is-running
+net pause-sig               or2.pause_resume.in0                                          <= and2.pause.out
+net resume-sig              or2.pause_resume.in1                                          <= and2.resume.out
+net toggle-ok               toggle.0.in                                            <= or2.pause_resume.out
 net togglesig               toggle2nist.0.in                                       <= toggle.0.out
-#these lines are commented out because they conflict with vc-p4s.hal
-#net program.pause           halui.program.pause                                    <= toggle2nist.0.on
-#net program.resume          halui.program.resume                                   <= toggle2nist.0.off
 
+#net pause-resume.signal     <= hm2_7i76e.0.7i76.0.0.input-05-not #(this is the red btn)
+#net pause-resume.signal     => and2.pause.in0
+#net pause-resume.signal     => and2.resume.in0
+
+#net program-paused.signal   <= halui.program.is-paused
+#net program-paused.signal   => toggle2nist.0.is-on
+#net program-paused.signal   => and2.pause.in1
+#net program-paused.signal   => and2.step.in1
+
+#net program-running.signal  <= halui.program.is-running
+#net program-running.signal  => and2.resume.in1
+
+#net pause.signal            <= and2.pause.out
+#net pause.signal            => or2.pause_resume.in0
+
+#net resume.signal           <= and2.resume.out
+#net resume.signal           => or2.pause_resume.in1
+
+#net toggle.signal           <= or2.pause_resume.out
+#net toggle.signal           => toggle.0.in
+
+#net toggle-nist.signal      <= toggle.0.out
+#net toggle-nist.signal      => toggle2nist.0.in
+
+#-------------
 net program.pause1  <= toggle2nist.0.on
 net program.resume1 <= toggle2nist.0.off
 
