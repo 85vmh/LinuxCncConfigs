@@ -1,8 +1,8 @@
 # 0---vc-p4s Control Pendant
 loadusr -W vc-p4s
 
-loadrt and2 names=and2.vc,and2.pause,and2.resume,and2.run,and2.step
-loadrt or2 names=or2.pause_resume,or2.pause,or2.resume,or2.run,or2.auto
+loadrt and2 names=and2.vc,and2.pause,and2.resume,and2.run,and2.step,and2.estop_buttons_reset,and2.estop_all_reset
+loadrt or2 names=or2.estop_buttons_active,or2.estop_all_active,or2.pause_resume,or2.pause,or2.resume,or2.run,or2.auto
 loadrt toggle count=1
 loadrt toggle2nist count=1
 
@@ -11,11 +11,17 @@ addf and2.pause         servo-thread
 addf and2.resume        servo-thread
 addf and2.run           servo-thread
 addf and2.step          servo-thread
+addf and2.estop_buttons_reset   servo-thread
+addf and2.estop_all_reset   servo-thread
+
+addf or2.estop_buttons_active   servo-thread
+addf or2.estop_all_active   servo-thread
 addf or2.pause_resume   servo-thread
 addf or2.pause          servo-thread
 addf or2.resume         servo-thread
 addf or2.run            servo-thread
 addf or2.auto           servo-thread
+
 addf toggle.0           servo-thread
 addf toggle2nist.0      servo-thread
 
@@ -200,10 +206,40 @@ net spindle.is-on halui.spindle.0.is-on =>  vc-p4s.spindle.is-on
 net spindle.start  vc-p4s.spindle.start  => halui.spindle.0.start
 net spindle.stop  vc-p4s.spindle.stop  => halui.spindle.0.stop
 
-# 13---E-STOP
-net estop vc-p4s.estop.activate => halui.estop.activate
-net reset vc-p4s.estop.reset => halui.estop.reset
-net estop-is-activated halui.estop.is-activated => vc-p4s.estop.is-activated
+# 13---E-STOP: pendant + external buttons
+net estop_is_activated         <= halui.estop.is-activated
+net estop_pendant.active       <= vc-p4s.estop.activate
+net estop_machine.active       <= hm2_7i76e.0.7i76.0.0.input-08-not
+net estop_controller.active    <= hm2_7i76e.0.7i76.0.0.input-09-not
+
+net estop_pendant.reset             <= vc-p4s.estop.reset
+net estop_machine.reset             <= hm2_7i76e.0.7i76.0.0.input-08
+net estop_controller.reset          <= hm2_7i76e.0.7i76.0.0.input-09
+
+#merge external buttons, when any of them is pressed, we have an estop
+net estop_machine.active         => or2.estop_buttons_active.in0
+net estop_controller.active      => or2.estop_buttons_active.in1
+net estop_from_buttons.active    <= or2.estop_buttons_active.out
+
+#merge external buttons, when both of them are depressed, we can reset
+net estop_machine.reset             => and2.estop_buttons_reset.in0
+net estop_controller.reset          => and2.estop_buttons_reset.in1
+net estop_from_buttons.reset        <= and2.estop_buttons_reset.out
+
+#merge the external buttons with the pendant, when any of them is pressed, we have an estop
+net estop_pendant.active            => or2.estop_all_active.in0
+net estop_from_buttons.active       => or2.estop_all_active.in1
+net estop_combined.active           <= or2.estop_all_active.out
+
+#merge the external buttons with the pendant, when all of them are depressed, we can reset
+net estop_pendant.reset            => and2.estop_all_reset.in0
+net estop_from_buttons.reset       => and2.estop_all_reset.in1
+net estop_combined.reset           <= and2.estop_all_reset.out
+
+#assign the merged signals to the output pins
+net estop_is_activated              => vc-p4s.estop.is-activated
+net estop_combined.active           => halui.estop.activate
+net estop_combined.reset            => halui.estop.reset
 
 # 14---MACHINE
 net machine-on  vc-p4s.machine.on  => halui.machine.on
