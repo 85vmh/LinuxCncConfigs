@@ -542,6 +542,8 @@ class ProbeScreenClass:
         self.lb_probe_z.set_text( "%.4f" % float(a[2]) )
         self.add_history(gtkbutton.get_tooltip_text(),"Z",0,0,0,0,0,0,0,0,a[2],0,0)
         self.set_zerro("Z",0,0,a[2])
+        self.command.mode( linuxcnc.MODE_MANUAL )
+        self.command.wait_complete()
     # X+
     def on_xp_released(self, gtkbutton, data = None):
         self.command.mode( linuxcnc.MODE_MDI )
@@ -570,6 +572,8 @@ class ProbeScreenClass:
         if self.gcode(s) == -1:
             return
         self.set_zerro("X")
+        self.command.mode( linuxcnc.MODE_MANUAL )
+        self.command.wait_complete()
 
     # Y+
     def on_yp_released(self, gtkbutton, data = None):
@@ -599,6 +603,8 @@ class ProbeScreenClass:
         if self.gcode(s) == -1:
             return
         self.set_zerro("Y")
+        self.command.mode( linuxcnc.MODE_MANUAL )
+        self.command.wait_complete()
 
     # X-
     def on_xm_released(self, gtkbutton, data = None):
@@ -628,6 +634,8 @@ class ProbeScreenClass:
         if self.gcode(s) == -1:
             return
         self.set_zerro("X")
+        self.command.mode( linuxcnc.MODE_MANUAL )
+        self.command.wait_complete()
 
     # Y-
     def on_ym_released(self, gtkbutton, data = None):
@@ -657,6 +665,8 @@ class ProbeScreenClass:
         if self.gcode(s) == -1:
             return
         self.set_zerro("Y")
+        self.command.mode( linuxcnc.MODE_MANUAL )
+        self.command.wait_complete()
 
     # Corners
     # Move Probe manual under corner 2-3 mm
@@ -710,6 +720,8 @@ class ProbeScreenClass:
         if self.gcode(s) == -1:
             return
         self.set_zerro("XY")
+        self.command.mode( linuxcnc.MODE_MANUAL )
+        self.command.wait_complete()
 
     # X+Y-
     def on_xpym_released(self, gtkbutton, data = None):
@@ -760,6 +772,8 @@ class ProbeScreenClass:
         if self.gcode(s) == -1:
             return
         self.set_zerro("XY")
+        self.command.mode( linuxcnc.MODE_MANUAL )
+        self.command.wait_complete()
 
     # X-Y+
     def on_xmyp_released(self, gtkbutton, data = None):
@@ -811,6 +825,8 @@ class ProbeScreenClass:
         if self.gcode(s) == -1:
             return
         self.set_zerro("XY")
+        self.command.mode( linuxcnc.MODE_MANUAL )
+        self.command.wait_complete()
 
     # X-Y-
     def on_xmym_released(self, gtkbutton, data = None):
@@ -862,6 +878,8 @@ class ProbeScreenClass:
         if self.gcode(s) == -1:
             return
         self.set_zerro("XY")
+        self.command.mode( linuxcnc.MODE_MANUAL )
+        self.command.wait_complete()
 
     # Center X+ X- Y+ Y-
     def on_xy_center_released(self, gtkbutton, data = None):
@@ -968,6 +986,8 @@ class ProbeScreenClass:
         if self.gcode(s) == -1:
             return
         self.set_zerro("XY")
+        self.command.mode( linuxcnc.MODE_MANUAL )
+        self.command.wait_complete()
 
     # --------------  Command buttons -----------------
     #               Measurement inside
@@ -1020,6 +1040,8 @@ class ProbeScreenClass:
         if self.gcode(s) == -1:
             return
         self.set_zerro("XY")
+        self.command.mode( linuxcnc.MODE_MANUAL )
+        self.command.wait_complete()
 
     # X+Y-
     def on_xpym1_released(self, gtkbutton, data = None):
@@ -1066,6 +1088,8 @@ class ProbeScreenClass:
         if self.gcode(s) == -1:
             return
         self.set_zerro("XY")
+        self.command.mode( linuxcnc.MODE_MANUAL )
+        self.command.wait_complete()
 
     # X-Y+
     def on_xmyp1_released(self, gtkbutton, data = None):
@@ -1113,6 +1137,8 @@ class ProbeScreenClass:
         if self.gcode(s) == -1:
             return
         self.set_zerro("XY")
+        self.command.mode( linuxcnc.MODE_MANUAL )
+        self.command.wait_complete()
 
     # X-Y-
     def on_xmym1_released(self, gtkbutton, data = None):
@@ -1159,6 +1185,8 @@ class ProbeScreenClass:
         if self.gcode(s) == -1:
             return
         self.set_zerro("XY")
+        self.command.mode( linuxcnc.MODE_MANUAL )
+        self.command.wait_complete()
 
     # Hole Xin- Xin+ Yin- Yin+
     def on_xy_hole_released(self, gtkbutton, data = None):
@@ -1247,6 +1275,8 @@ class ProbeScreenClass:
         # move Z to start point
         self.z_clearance_up()
         self.set_zerro("XY")
+        self.command.mode( linuxcnc.MODE_MANUAL )
+        self.command.wait_complete()
 
     # --------------  Command buttons -----------------
     #               Measurement angle
@@ -1300,6 +1330,8 @@ class ProbeScreenClass:
         if self.gcode(s) == -1:
             return
         self.rotate_coord_system(alfa)
+        self.command.mode( linuxcnc.MODE_MANUAL )
+        self.command.wait_complete()
 
     # Y-Y-
     def on_angle_ym_released(self, gtkbutton, data = None):
@@ -1346,6 +1378,8 @@ class ProbeScreenClass:
         if self.gcode(s) == -1:
             return
         self.rotate_coord_system(alfa)
+        self.command.mode( linuxcnc.MODE_MANUAL )
+        self.command.wait_complete()
 
     # X+X+
     def on_angle_xp_released(self, gtkbutton, data = None):
@@ -1392,6 +1426,8 @@ class ProbeScreenClass:
         if self.gcode(s) == -1:
             return
         self.rotate_coord_system(alfa)
+        self.command.mode( linuxcnc.MODE_MANUAL )
+        self.command.wait_complete()
 
     # X-X-
     def on_angle_xm_released(self, gtkbutton, data = None):
@@ -1438,6 +1474,8 @@ class ProbeScreenClass:
         if self.gcode(s) == -1:
             return
         self.rotate_coord_system(alfa)
+        self.command.mode( linuxcnc.MODE_MANUAL )
+        self.command.wait_complete()
 
     # Lx OUT
     def on_lx_out_released(self, gtkbutton, data = None):
@@ -1495,6 +1533,8 @@ class ProbeScreenClass:
         if self.gcode(s) == -1:
             return
         self.set_zerro("XY")
+        self.command.mode( linuxcnc.MODE_MANUAL )
+        self.command.wait_complete()
 
 
     # Ly OUT
@@ -1554,7 +1594,8 @@ class ProbeScreenClass:
         if self.gcode(s) == -1:
             return
         self.set_zerro("XY")
-
+        self.command.mode( linuxcnc.MODE_MANUAL )
+        self.command.wait_complete()    
 
     # Lx IN
     def on_lx_in_released(self, gtkbutton, data = None):
@@ -1602,6 +1643,8 @@ class ProbeScreenClass:
         # move Z to start point
         self.z_clearance_up()
         self.set_zerro("XY")
+        self.command.mode( linuxcnc.MODE_MANUAL )
+        self.command.wait_complete()
 
 
     # Ly IN
@@ -1651,6 +1694,8 @@ class ProbeScreenClass:
         # move Z to start point
         self.z_clearance_up()
         self.set_zerro("XY")
+        self.command.mode( linuxcnc.MODE_MANUAL )
+        self.command.wait_complete()
 
 
 #---------------------------------------
@@ -1733,7 +1778,7 @@ class ProbeScreenClass:
             self.warning_dialog( self, _( "Conversion error in btn_block_height!" ),
                                    _( "Please enter only numerical values\nValues have not been applied" ) )
         # set koordinate system to new origin
-        origin = float(self.inifile.find("AXIS_2", "MIN_LIMIT")) + blockheight
+        origin = float(self.inifile.find("AXIS_Z", "MIN_LIMIT")) + blockheight
         self.command.mode( linuxcnc.MODE_MDI )
         self.command.wait_complete()
         self.command.mdi( "G10 L2 P0 Z%s" % origin )
@@ -1753,6 +1798,8 @@ class ProbeScreenClass:
         a=self.stat.probed_position
         self.spbtn_probe_height.set_value( float(a[2]) )
         self.add_history(gtkbutton.get_tooltip_text(),"Z",0,0,0,0,0,0,0,0,a[2],0,0)
+        self.command.mode( linuxcnc.MODE_MANUAL )
+        self.command.wait_complete()
 
     def clicked_btn_probe_workpiece(self, data = None):
         # Start probe_down.ngc
@@ -1767,6 +1814,8 @@ class ProbeScreenClass:
         a=self.stat.probed_position
         self.spbtn_block_height.set_value( float(a[2]) )
         self.add_history(gtkbutton.get_tooltip_text(),"Z",0,0,0,0,0,0,0,0,a[2],0,0)
+        self.command.mode( linuxcnc.MODE_MANUAL )
+        self.command.wait_complete()
 
     def on_chk_use_tool_measurement_toggled( self, gtkcheckbutton, data = None ):
         if gtkcheckbutton.get_active():

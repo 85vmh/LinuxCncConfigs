@@ -1,13 +1,31 @@
 # Here we have the settings needed to make probe screen work.
 
-loadrt or2 names=or2.probe
-addf or2.probe       servo-thread
+loadrt or2  names=or2.probe
+loadrt and2 names=and2.touch_probe,and2.tool_length
 
-net probe-in     <=  hm2_7i76e.0.7i76.0.0.input-10-not
-net length-in    <=  hm2_7i76e.0.7i76.0.0.input-12-not
+addf and2.touch_probe       servo-thread
+addf and2.tool_length       servo-thread
+addf or2.probe              servo-thread
 
-net probe-in     =>  or2.probe.in0
-net length-in     =>  or2.probe.in1
+#pins 10 to 13
 
-net  probe-or-length   or2.probe.out
-net  probe-or-length   motion.probe-input
+net tool_length.sensor_tripped      <= hm2_7i76e.0.7i76.0.0.input-10-not
+net tool_length.sensor_plugged      <= hm2_7i76e.0.7i76.0.0.input-11
+
+net touch_probe.sensor_tripped      <= hm2_7i76e.0.7i76.0.0.input-12-not
+net touch_probe.sensor_plugged      <= hm2_7i76e.0.7i76.0.0.input-13
+net touch_probe.sensor_plugged      => spindle.0.inhibit  #prevent accidental spindle start
+
+net tool_length.sensor_plugged      => and2.tool_length.in0
+net tool_length.sensor_tripped      => and2.tool_length.in1
+net tool_length.touched             <= and2.tool_length.out
+
+net touch_probe.sensor_plugged      => and2.touch_probe.in0
+net touch_probe.sensor_tripped      => and2.touch_probe.in1
+net touch_probe.touched             <= and2.touch_probe.out
+
+net tool_length.touched            => or2.probe.in0
+net touch_probe.touched            => or2.probe.in1
+
+net  any_probe.touched      <= or2.probe.out
+net  any_probe.touched      => motion.probe-input
