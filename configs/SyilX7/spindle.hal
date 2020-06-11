@@ -1,7 +1,9 @@
 # Here we have all the spindle settings
 
-# Settings from talla83 youtube user
+loadrt lincurve names=lincurve.spindle personality=16
+addf lincurve.spindle     servo-thread
 
+# Settings from talla83 youtube user
 setp hm2_7i76e.0.encoder.00.counter-mode 0
 setp hm2_7i76e.0.encoder.00.filter 1
 setp hm2_7i76e.0.encoder.00.index-invert 1
@@ -17,6 +19,64 @@ setp hm2_7i76e.0.7i76.0.0.spinout-minlim   0
 setp hm2_7i76e.0.7i76.0.0.spinout-maxlim   9000
 setp hm2_7i76e.0.7i76.0.0.spinout-scalemax 9000
 
-net spindle-vel-cmd-rpm-abs => hm2_7i76e.0.7i76.0.0.spinout
+#Enter the commanded (Desired) speed in the lincurve.spindle.x-val-NN entries
+#Enter the command required to achieve the desired speed in lincurve.spindle.y-val-NN.
+#Where NN is 00 - 15
+#To start make the lincurve pair equal. Then test each speed and adjust lincurve.spindle.y-val as needed.
+#Ii found that I had to make a couple of passes through this process to get everything where I wanted it
+
+setp lincurve.spindle.x-val-00 200
+setp lincurve.spindle.y-val-00 243
+
+setp lincurve.spindle.x-val-01 1000
+setp lincurve.spindle.y-val-01 930
+
+#setp lincurve.spindle.x-val-02 1500
+#setp lincurve.spindle.y-val-02 1290
+
+#setp lincurve.spindle.x-val-03 1750
+#setp lincurve.spindle.y-val-03 1489
+
+setp lincurve.spindle.x-val-04 2000
+setp lincurve.spindle.y-val-04 1700
+
+#setp lincurve.spindle.x-val-05 2500
+#setp lincurve.spindle.y-val-05 2178
+
+setp lincurve.spindle.x-val-06 3000
+setp lincurve.spindle.y-val-06 2490
+
+#setp lincurve.spindle.x-val-07 3500
+#setp lincurve.spindle.y-val-07 2900
+
+setp lincurve.spindle.x-val-08 4000
+setp lincurve.spindle.y-val-08 3290
+
+#setp lincurve.spindle.x-val-09 4500
+#setp lincurve.spindle.y-val-09 3683
+
+setp lincurve.spindle.x-val-10 5000
+setp lincurve.spindle.y-val-10 4090
+
+#setp lincurve.spindle.x-val-11 5500
+#setp lincurve.spindle.y-val-11 5500
+
+setp lincurve.spindle.x-val-12 6000
+setp lincurve.spindle.y-val-12 5285
+
+#setp lincurve.spindle.x-val-13 6500
+#setp lincurve.spindle.y-val-13 6500
+
+setp lincurve.spindle.x-val-14 7000
+setp lincurve.spindle.y-val-14 5690
+
+setp lincurve.spindle.x-val-15 9000
+setp lincurve.spindle.y-val-15 7290
+
+net spindle-vel-cmd-rpm-abs => lincurve.spindle.in
+net adjusted-speed <= lincurve.spindle.out
+net adjusted-speed => hm2_7i76e.0.7i76.0.0.spinout
+
+#net spindle-vel-cmd-rpm-abs => hm2_7i76e.0.7i76.0.0.spinout
 net spindle-enable => hm2_7i76e.0.7i76.0.0.spinena
 net spindle-cw => hm2_7i76e.0.7i76.0.0.spindir

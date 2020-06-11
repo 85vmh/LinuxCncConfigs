@@ -1,11 +1,12 @@
-T2 P2 D4.000000 Z-75.303600 ;twist drill 
-T1 P1 D6.000000 Z+334.912500 ;2 flute end mill 
+T2 P2 D4.000000 Z-1.405500 ;twist drill 
+T1 P1 D5.000000 Z-25.774953 ;franken 4 flutes 
 T3 P3 D63.000000 Z-75.303700 ;face mill 
-T4 P4 D6.000000 Z+324.097250 ;chamfer mill 
-T100 P100 D2.000000 Z-117.611792 ;touch probe 
-T5 P5 D3.300000 Z+347.207333 ;twist drill 
+T4 P4 D6.000000 Z-35.984511 ;chamfer mill 
+T100 P100 D2.000000 Z-117.611800 ;touch probe 
+T5 P5 D3.300000 Z+347.207300 ;twist drill 
 T6 P6 D18.180000 ;5mm radius mill 
 T7 P7 D14.000000 ;ball end mill 
-T8 P8 ;Drill chuck 
-T9 P9 D8.000000 ;comment 
-T11 P11 D4.000000 ;comment 
+T8 P8 Z+17.442114 ;Drill chuck 
+T9 P9 D8.000000 Z-12.538261 ;comment 
+T11 P11 D4.000000 Z+333.655800 ;comment 
+T12 P0 D3.000000 Z-31.427177 ;2 flutes carbide 

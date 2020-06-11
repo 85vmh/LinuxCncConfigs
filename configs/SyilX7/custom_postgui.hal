@@ -23,3 +23,6 @@ net custom-control.spindle-override         gmoccapy.spindle.spindle-override.co
 
 net custom-control.feed-override.reset      gmoccapy.feed.reset-feed-override        <=  hm2_7i76e.0.7i76.0.0.input-06
 net custom-control.spindle-override.reset   gmoccapy.spindle.reset-spindle-override  <=  hm2_7i76e.0.7i76.0.0.input-07
+
+net spindle-vel-cmd-rpm-abs => gmoccapy.spindle_feedback_bar
+net spindle-at-speed        => gmoccapy.spindle_at_speed_led
